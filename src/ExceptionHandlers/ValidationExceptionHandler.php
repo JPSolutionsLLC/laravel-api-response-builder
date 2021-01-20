@@ -24,11 +24,13 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
  */
 final class ValidationExceptionHandler implements ExceptionHandlerContract
 {
-	public function handle(array $user_config, /** @scrutinizer ignore-unused */ \Exception $ex): ?array
+	public function handle(array $user_config, /** @scrutinizer ignore-unused */ \Throwable $ex): ?array
 	{
-		return [
+        $defaults = [
 			RB::KEY_API_CODE  => BaseApiCodes::EX_VALIDATION_EXCEPTION(),
 			RB::KEY_HTTP_CODE => HttpResponse::HTTP_UNPROCESSABLE_ENTITY,
 		];
+
+		return \array_replace($defaults, $user_config);
 	}
 }
